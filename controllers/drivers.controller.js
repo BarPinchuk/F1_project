@@ -108,21 +108,21 @@ export const checkDriverFavoriteStatus = (req, res) => {
 
 /**
  * @async
- * @function getUpcomingRaces
- * @description Controller to fetch the full list of circuits/races from the external F1 API.
+ * @function getCircuits
+ * @description Controller to fetch the full list of circuits from the external F1 API.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  * @returns {Promise<void>} Sends a 200 OK response with the external circuits data, or 500 Internal Server Error.
  */
-export const getUpcomingRaces = async (req, res) => {
+export const getCircuits = async (req, res) => {
   try {
-    logger.info("Fetching upcoming races from external F1 API");
-    const races = await driversService.fetchUpcomingRaces();
+    logger.info("Fetching circuits from external F1 API");
+    const circuits = await driversService.fetchCircuits();
 
-    logger.info("Upcoming races fetched successfully");
-    res.status(200).json(races);
+    logger.info("Circuits fetched successfully");
+    res.status(200).json(circuits);
   } catch (error) {
-    logger.error(`Failed to fetch upcoming races: ${error.message}`);
+    logger.error(`Failed to fetch circuits: ${error.message}`);
     res.status(500).json({ error: error.message });
   }
 };

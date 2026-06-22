@@ -71,7 +71,7 @@ export const checkDriverStatus = (driverId) => {
  * 5. Fetches upcoming races/circuits from the external F1 API.
  * @returns {Promise<Array>} List of circuits/races.
  */
-export const fetchUpcomingRaces = async () => {
+export const fetchCircuits = async () => {
   try {
     const response = await fetch("https://f1api.dev/api/circuits");
 
@@ -83,7 +83,7 @@ export const fetchUpcomingRaces = async () => {
 
     return data.circuits;
   } catch (error) {
-    console.error("Error in FetchUpcomingRaces service:", error);
+    console.error("Error in FetchCircuits service:", error);
     throw error;
   }
 };

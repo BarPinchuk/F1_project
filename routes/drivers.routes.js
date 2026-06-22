@@ -12,8 +12,8 @@ router.get('/', driverController.getFavoriteDrivers);
 // Check if a specific driver exists in favorites by name
 router.get("/status/:driverId", driverController.checkDriverFavoriteStatus);
 
-// Get upcoming races from external F1 API
-router.get('/upcoming', driverController.getUpcomingRaces);
+// Get circuits from external F1 API
+router.get('/circuits', driverController.getCircuits);
 
 // Delete a driver from local favorites by ID
 router.delete('/:id', driverController.deleteFavoriteDriver);
