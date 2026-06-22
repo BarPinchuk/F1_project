@@ -3,14 +3,19 @@ import * as driverController from '../controllers/drivers.controller.js';
 
 const router = Router();
 
-router.post("/", driverController.addFavoriteDriver);
+// Add a driver to local favorites by their ID via URL params
+router.post('/:id', driverController.addFavoriteDriver);
 
-router.get("/", driverController.getFavoriteDrivers);
+// Get all local favorite drivers
+router.get('/', driverController.getFavoriteDrivers);
 
-router.get("/status", driverController.checkDriverFavoriteStatus);
+// Check if a specific driver exists in favorites by name
+router.get('/status', driverController.checkDriverFavoriteStatus);
 
-router.get("/upcoming", driverController.getUpcomingRaces);
+// Get upcoming races from external F1 API
+router.get('/upcoming', driverController.getUpcomingRaces);
 
-router.delete("/:id", driverController.deleteFavoriteDriver);
+// Delete a driver from local favorites by ID
+router.delete('/:id', driverController.deleteFavoriteDriver);
 
 export default router;

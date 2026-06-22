@@ -10,12 +10,14 @@ import * as driversService from "../services/drivers.service.js";
  */
 export const addFavoriteDriver = async (req, res) => {
   try {
-    const { driverId } = req.body;
+    const { id: driverId } = req.params; 
+    
     if (!driverId) {
       return res
         .status(400)
-        .json({ error: "driverId is required in request body" });
+        .json({ error: "driverId is required in the URL path" });
     }
+    
     const newFavorite = await driversService.addDriverToFavorites(driverId);
     res.status(201).json({
       message: "Driver added to favorites successfully",

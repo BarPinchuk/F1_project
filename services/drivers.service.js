@@ -13,14 +13,16 @@ export const addDriverToFavorites = async (driverId) => {
   }
 
   const response = await fetch(`${f1ApiBaseUrl}/drivers/${driverId}`);
-  
+
   if (!response.ok) {
     throw new Error(`Driver '${driverId}' not found in the external F1 API`);
   }
 
-  const driverData = await response.json();
-  
-  return driversDal.addFavorite(driverData);
+  const data = await response.json();
+
+  const cleanDriver = data.driver[0];
+
+  return driversDal.addFavorite(cleanDriver);
 };
 
 /**
@@ -33,7 +35,7 @@ export const fetchFavoriteDrivers = () => {
 
 /**
  * 3. Removes a driver from local favorites.
- * @param {string} driverId 
+ * @param {string} driverId
  * @returns {Object} The removed driver.
  */
 export const removeDriverFromFavorites = (driverId) => {
@@ -46,21 +48,24 @@ export const removeDriverFromFavorites = (driverId) => {
 
 /**
  * 4. Checks if a driver name exists locally and returns a specific message.
- * @param {string} name 
+ * @param {string} name
  * @returns {Object} Message and driver data if found.
  */
 export const checkDriverStatus = (name) => {
   if (!name) throw new Error("Driver name query parameter is required");
-  
+
   const driver = driversDal.findFavoriteByName(name);
   if (!driver) {
-    return { found: false, message: `Driver '${name}' is not in your favorites list.` };
+    return {
+      found: false,
+      message: `Driver '${name}' is not in your favorites list.`,
+    };
   }
-  
-  return { 
-    found: true, 
+
+  return {
+    found: true,
     message: `Yes! ${driver.name} ${driver.surname} is in your favorites!`,
-    driver 
+    driver,
   };
 };
 
@@ -70,18 +75,17 @@ export const checkDriverStatus = (name) => {
  */
 export const fetchUpcomingRaces = async () => {
   try {
-    const response = await fetch('https://f1api.dev/api/circuits');
-    
+    const response = await fetch("https://f1api.dev/api/circuits");
+
     if (!response.ok) {
-      throw new Error('Failed to fetch circuits from external API');
+      throw new Error("Failed to fetch circuits from external API");
     }
 
     const data = await response.json();
-    
-    return data.circuits; 
-    
+
+    return data.circuits;
   } catch (error) {
-    console.error('Error in FetchUpcomingRaces service:', error);
+    console.error("Error in FetchUpcomingRaces service:", error);
     throw error;
   }
 };
