@@ -1,4 +1,7 @@
 import * as driversService from "../services/drivers.service.js";
+import { createLogger } from "../utils/logger.js";
+
+const logger = createLogger("DriversController");
 
 /**
  * @async
@@ -13,17 +16,24 @@ export const addFavoriteDriver = async (req, res) => {
     const { id: driverId } = req.params;
 
     if (!driverId) {
+      logger.warn(
+        "Attempted to add favorite driver without providing driverId in URL",
+      );
       return res
         .status(400)
         .json({ error: "driverId is required in the URL path" });
     }
 
+    logger.info(`Adding driver '${driverId}' to favorites`);
     const newFavorite = await driversService.addDriverToFavorites(driverId);
+
+    logger.info(`Driver '${driverId}' successfully added to favorites`);
     res.status(201).json({
       message: "Driver added to favorites successfully",
       data: newFavorite,
     });
   } catch (error) {
+    logger.error(`Failed to add driver '${req.params.id}': ${error.message}`);
     res.status(400).json({ error: error.message });
   }
 };
@@ -37,28 +47,37 @@ export const addFavoriteDriver = async (req, res) => {
  */
 export const getFavoriteDrivers = (req, res) => {
   try {
+    logger.info("Fetching all favorite drivers");
     const favorites = driversService.fetchFavoriteDrivers();
     res.status(200).json(favorites);
   } catch (error) {
+    logger.error(`Failed to fetch favorite drivers: ${error.message}`);
     res.status(500).json({ error: error.message });
   }
 };
 
 /**
  * @function deleteFavoriteDriver
- * @description Controller to remove a driver from the local favorites list by ID.
- * @param {Object} req - Express request object containing the driver ID as a URL parameter.
+ * @description Controller to delete a specific driver from local favorites by ID.
+ * @param {Object} req - Express request object containing the ID parameter.
  * @param {Object} res - Express response object.
- * @returns {void} Sends a 200 OK response with the deleted driver data, or 404 Not Found on error.
+ * @returns {void} Sends a 200 OK response on success, or 404 Not Found on error.
  */
 export const deleteFavoriteDriver = (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`Attempting to remove driver '${id}' from favorites`);
+
     const removed = driversService.removeDriverFromFavorites(id);
+
+    logger.info(`Driver '${id}' successfully removed from favorites`);
     res
       .status(200)
       .json({ message: "Driver removed from favorites", data: removed });
   } catch (error) {
+    logger.error(
+      `Failed to delete driver '${req.params.id}': ${error.message}`,
+    );
     res.status(404).json({ error: error.message });
   }
 };
@@ -73,10 +92,16 @@ export const deleteFavoriteDriver = (req, res) => {
 export const checkDriverFavoriteStatus = (req, res) => {
   try {
     const { driverId } = req.params;
-    
+    logger.info(`Checking favorite status for driver '${driverId}'`);
+
     const status = driversService.checkDriverStatus(driverId);
+
+    logger.info(`Status check completed for driver '${driverId}'`);
     res.status(200).json(status);
   } catch (error) {
+    logger.error(
+      `Failed to check status for driver '${req.params.driverId}': ${error.message}`,
+    );
     res.status(400).json({ error: error.message });
   }
 };
@@ -91,9 +116,13 @@ export const checkDriverFavoriteStatus = (req, res) => {
  */
 export const getUpcomingRaces = async (req, res) => {
   try {
-    const races = await driversService.fetchUpcomingRaces();
+    logger.info("Fetching upcoming races from external F1 API");
+    const races = await driversService.getUpcomingRaces();
+
+    logger.info("Upcoming races fetched successfully");
     res.status(200).json(races);
   } catch (error) {
+    logger.error(`Failed to fetch upcoming races: ${error.message}`);
     res.status(500).json({ error: error.message });
   }
 };
