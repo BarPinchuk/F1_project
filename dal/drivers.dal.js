@@ -1,9 +1,7 @@
 /**
  * In-memory array acting as our local database for FAVORITE F1 drivers.
  */
-let favoriteDrivers = [
-  // אפשר להשאיר ריק או לשים נהג אחד דיפולטיבי לבדיקות ראשוניות
-];
+let favoriteDrivers = [];
 
 /**
  * Returns all locally saved favorite drivers.
