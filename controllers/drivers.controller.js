@@ -117,7 +117,7 @@ export const checkDriverFavoriteStatus = (req, res) => {
 export const getUpcomingRaces = async (req, res) => {
   try {
     logger.info("Fetching upcoming races from external F1 API");
-    const races = await driversService.getUpcomingRaces();
+    const races = await driversService.fetchUpcomingRaces();
 
     logger.info("Upcoming races fetched successfully");
     res.status(200).json(races);
