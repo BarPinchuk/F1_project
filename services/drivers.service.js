@@ -69,11 +69,19 @@ export const checkDriverStatus = (name) => {
  * @returns {Promise<Array>} List of circuits/races.
  */
 export const fetchUpcomingRaces = async () => {
-  const response = await fetch(`${f1ApiBaseUrl}/circuits`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch circuits from external F1 API");
+  try {
+    const response = await fetch('https://f1api.dev/api/circuits');
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch circuits from external API');
+    }
+
+    const data = await response.json();
+    
+    return data.circuits; 
+    
+  } catch (error) {
+    console.error('Error in FetchUpcomingRaces service:', error);
+    throw error;
   }
-  const circuits = await response.json();
-  
-  return circuits;
 };
