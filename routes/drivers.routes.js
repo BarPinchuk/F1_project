@@ -10,7 +10,7 @@ router.post('/:id', driverController.addFavoriteDriver);
 router.get('/', driverController.getFavoriteDrivers);
 
 // Check if a specific driver exists in favorites by name
-router.get('/status', driverController.checkDriverFavoriteStatus);
+router.get("/status/:driverId", driverController.checkDriverFavoriteStatus);
 
 // Get upcoming races from external F1 API
 router.get('/upcoming', driverController.getUpcomingRaces);

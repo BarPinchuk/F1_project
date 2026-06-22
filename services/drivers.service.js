@@ -51,21 +51,19 @@ export const removeDriverFromFavorites = (driverId) => {
  * @param {string} name
  * @returns {Object} Message and driver data if found.
  */
-export const checkDriverStatus = (name) => {
-  if (!name) throw new Error("Driver name query parameter is required");
-
-  const driver = driversDal.findFavoriteByName(name);
+export const checkDriverStatus = (driverId) => {
+  if (!driverId) throw new Error("driverId query parameter is required");
+  
+  const driver = driversDal.getFavoriteById(driverId);
+  
   if (!driver) {
-    return {
-      found: false,
-      message: `Driver '${name}' is not in your favorites list.`,
-    };
+    return { found: false, message: `Driver with ID '${driverId}' is not in your favorites list.` };
   }
-
-  return {
-    found: true,
+  
+  return { 
+    found: true, 
     message: `Yes! ${driver.name} ${driver.surname} is in your favorites!`,
-    driver,
+    driver 
   };
 };
 
