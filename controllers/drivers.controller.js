@@ -9,19 +9,19 @@ const logger = createLogger("DriversController");
  * @description Controller to fetch a driver from the external F1 API and add them to local favorites.
  * @param {Object} req - Express request object containing driverId in the body.
  * @param {Object} res - Express response object.
- * @returns {Promise<void>} Sends a 21 Created response with the driver data, or 400 Bad Request on error.
+ * @returns {Promise<void>} Sends a 201 Created response with the driver data, or 400 Bad Request on error.
  */
 export const addFavoriteDriver = async (req, res) => {
   try {
-    const { id: driverId } = req.params;
+    const { driverId } = req.body;
 
     if (!driverId) {
       logger.warn(
-        "Attempted to add favorite driver without providing driverId in URL",
+        "Attempted to add favorite driver without providing driverId in the body",
       );
       return res
         .status(400)
-        .json({ error: "driverId is required in the URL path" });
+        .json({ error: "driverId is required in the request body" });
     }
 
     logger.info(`Adding driver '${driverId}' to favorites`);
@@ -33,7 +33,7 @@ export const addFavoriteDriver = async (req, res) => {
       data: newFavorite,
     });
   } catch (error) {
-    logger.error(`Failed to add driver '${req.params.id}': ${error.message}`);
+    logger.error(`Failed to add driver: ${error.message}`);
     res.status(400).json({ error: error.message });
   }
 };

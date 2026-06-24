@@ -1,15 +1,16 @@
 import { Router } from 'express';
 import * as driverController from '../controllers/drivers.controller.js';
+import { isReqHasBody } from '../utils/reqValidation.js';
 
 const router = Router();
 
-// Add a driver to local favorites by their ID via URL params
-router.post('/:id', driverController.addFavoriteDriver);
+// Add a driver to local favorites via request body
+router.post('/', isReqHasBody, driverController.addFavoriteDriver);
 
 // Get all local favorite drivers
 router.get('/', driverController.getFavoriteDrivers);
 
-// Check if a specific driver exists in favorites by name
+// Check if a specific driver exists in favorites by ID
 router.get("/status/:driverId", driverController.checkDriverFavoriteStatus);
 
 // Get circuits from external F1 API
