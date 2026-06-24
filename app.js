@@ -2,7 +2,7 @@ import driverRoutes from "./routes/drivers.routes.js";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { createLogger } from "./utils/logger.js"; // ודא שהנתיב מדויק למיקום הקובץ אצלך
+import { createLogger } from "./utils/logger.js";
 
 dotenv.config();
 
