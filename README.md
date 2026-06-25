@@ -52,7 +52,7 @@ All resources are hosted under the `/api/drivers` base path prefix.
 | GET | `/circuits` | Fetches a clean array of upcoming F1 circuits from the external API. |
 | GET | `/` | Retrieves the complete list of locally saved favorite drivers. |
 | GET | `/status/:driverId` | Checks if a driver matching the `driverId` exists in local favorites. |
-| POST | `/:id` | Fetches details for the driver from the external F1 API and adds them to local favorites. |
+| POST | `/` | Fetches details for the driver from the external F1 API and adds them to local favorites. (Requires `driverId` in the request body) |
 | DELETE | `/:id` | Removes a specific driver from the local favorites list by their ID. |
 
 ## Logging and Error Handling
